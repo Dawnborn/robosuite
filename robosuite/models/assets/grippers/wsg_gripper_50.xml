@@ -1,0 +1,42 @@
+<mujoco model="wsg_50">
+    <compiler angle="degree" coordinate="local" />
+    <option gravity="0 0 -9.81" />
+    <asset>
+        <mesh name="base_link_mesh" file="meshes/wsg50/WSG50_110.stl" scale="1 1 1"/>
+        <mesh name="gripper_left_mesh" file="meshes/wsg50/GUIDE_WSG50_110.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger_left_mesh" file="meshes/wsg50/WSG-FMF.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="gripper_right_mesh" file="meshes/wsg50/GUIDE_WSG50_110.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="finger_right_mesh" file="meshes/wsg50/WSG-FMF.stl" scale="0.001 0.001 0.001"/>
+    </asset>
+    <worldbody>
+        <!-- Base Link -->
+        <body name="base_link" pos="0 0 0">
+            <inertial pos="0 0 0" mass="1.2" diaginertia="1 1 1" />
+            <geom type="mesh" mesh="base_link_mesh" rgba="0.5 0.5 0.5 1" />
+            
+            <!-- Gripper Left -->
+            <body name="gripper_left" pos="0 0 0">
+                <joint name="base_joint_gripper_left" type="slide" axis="1 0 0" pos="0 0 0" range="-0.055 -0.0027" damping="100" />
+                <geom type="mesh" mesh="gripper_left_mesh" rgba="0 0 0 0" />
+                
+                <!-- Finger Left -->
+                <body name="finger_left" pos="0 0 0.023">
+                    <joint name="guide_joint_finger_left" type="fixed" />
+                    <geom type="mesh" mesh="finger_left_mesh" rgba="0 0 0 0" />
+                </body>
+            </body>
+
+            <!-- Gripper Right -->
+            <body name="gripper_right" pos="0 0 0" euler="0 0 180">
+                <joint name="base_joint_gripper_right" type="slide" axis="-1 0 0" pos="0 0 0" range="0.0027 0.055" damping="100" />
+                <geom type="mesh" mesh="gripper_right_mesh" rgba="0 0 0 0" />
+                
+                <!-- Finger Right -->
+                <body name="finger_right" pos="0 0 0.023">
+                    <joint name="guide_joint_finger_right" type="fixed" />
+                    <geom type="mesh" mesh="finger_right_mesh" rgba="0 0 0 0" />
+                </body>
+            </body>
+        </body>
+    </worldbody>
+</mujoco>

@@ -26,7 +26,7 @@ class ManipulatorModel(RobotModel):
         # Different case based on whether we're dealing with single or bimanual armed robot
         if self.arm_type == "single":
             hand_element = find_elements(
-                root=self.root, tags="body", attribs={"name": self.eef_name}, return_first=True
+                root=self.root, tags="body", attribs={"name": self.eef_name}, return_first=True # self.eef_name 'robot0_right_hand'
             )
             self.hand_rotation_offset = string_to_array(hand_element.get("quat", "1 0 0 0"))[[1, 2, 3, 0]]
         else:  # "bimanual" case

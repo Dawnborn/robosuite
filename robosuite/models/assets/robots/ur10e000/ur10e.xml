@@ -1,0 +1,113 @@
+<mujoco model="ur10e">
+  <compiler angle="radian" meshdir="assets" autolimits="true"/>
+  <option integrator="implicitfast"/>
+
+  <asset>
+    <material name="black" rgba="0.033 0.033 0.033 1"/>
+    <material name="jointgray" rgba="0.278 0.278 0.278 1"/>
+    <material name="linkgray" rgba="0.82 0.82 0.82 1"/>
+    <material name="urblue" rgba="0.49 0.678 0.8 1"/>
+
+    <mesh name="base_0" file="assets/base_0.obj"/>
+    <mesh name="base_1" file="assets/base_1.obj"/>
+    <mesh name="shoulder_0" file="assets/shoulder_0.obj"/>
+    <mesh name="shoulder_1" file="assets/shoulder_1.obj"/>
+    <mesh name="shoulder_2" file="assets/shoulder_2.obj"/>
+    <mesh name="upperarm_0" file="assets/upperarm_0.obj"/>
+    <mesh name="upperarm_1" file="assets/upperarm_1.obj"/>
+    <mesh name="upperarm_2" file="assets/upperarm_2.obj"/>
+    <mesh name="upperarm_3" file="assets/upperarm_3.obj"/>
+    <mesh name="forearm_0" file="assets/forearm_0.obj"/>
+    <mesh name="forearm_1" file="assets/forearm_1.obj"/>
+    <mesh name="forearm_2" file="assets/forearm_2.obj"/>
+    <mesh name="forearm_3" file="assets/forearm_3.obj"/>
+    <mesh name="wrist1_0" file="assets/wrist1_0.obj"/>
+    <mesh name="wrist1_1" file="assets/wrist1_1.obj"/>
+    <mesh name="wrist1_2" file="assets/wrist1_2.obj"/>
+    <mesh name="wrist2_0" file="assets/wrist2_0.obj"/>
+    <mesh name="wrist2_1" file="assets/wrist2_1.obj"/>
+    <mesh name="wrist2_2" file="assets/wrist2_2.obj"/>
+    <mesh name="wrist3" file="assets/wrist3.obj"/>
+  </asset>
+
+  <worldbody>
+    <light name="spotlight" mode="targetbodycom" target="wrist_2_link" pos="0 -1 2"/>
+    <body name="base" quat="1 0 0 1">
+      <inertial mass="4.0" pos="0 0 0" diaginertia="0.0061063308908 0.0061063308908 0.01125"/>
+      <geom mesh="base_0" material="black"/>
+      <geom mesh="base_1" material="jointgray"/>
+      
+      <!-- Shoulder Joint -->
+      <body name="shoulder_link" pos="0 0 0.181">
+        <inertial pos="0 0 0" mass="7.778" diaginertia="0.0314743 0.0314743 0.0218756"/>
+        <joint name="shoulder_pan_joint" type="hinge" axis="0 0 1" range="-6.28319 6.28319" damping="10" armature="0.1"/>
+        <geom mesh="shoulder_0" material="urblue"/>
+        <geom mesh="shoulder_1" material="black"/>
+        <geom mesh="shoulder_2" material="jointgray"/>
+        <geom type="capsule" size="0.078 0.08" pos="0 0 -0.05"/>
+        
+        <!-- Upper Arm Joint -->
+        <body name="upper_arm_link" pos="0 0.176 0" quat="1 0 1 0">
+          <inertial pos="0 0 0.3065" mass="12.93" diaginertia="0.423074 0.423074 0.0363656"/>
+          <joint name="shoulder_lift_joint" type="hinge" axis="0 1 0" range="-6.28319 6.28319" damping="10"/>
+          <geom mesh="upperarm_0" material="black"/>
+          <geom mesh="upperarm_1" material="jointgray"/>
+          <geom mesh="upperarm_2" material="urblue"/>
+          <geom mesh="upperarm_3" material="linkgray"/>
+          <geom type="capsule" size="0.06 0.3" pos="0 0 0.3"/>
+          
+          <!-- Forearm Joint -->
+          <body name="forearm_link" pos="0 -0.137 0.613">
+            <inertial pos="0 0 0.2855" mass="3.87" diaginertia="0.11059 0.11059 0.0108844"/>
+            <joint name="elbow_joint" type="hinge" axis="0 1 0" range="-3.1415 3.1415" damping="5"/>
+            <geom mesh="forearm_0" material="urblue"/>
+            <geom mesh="forearm_1" material="black"/>
+            <geom mesh="forearm_2" material="jointgray"/>
+            <geom mesh="forearm_3" material="linkgray"/>
+            <geom type="capsule" size="0.043 0.28" pos="0 0 0.29"/>
+            
+            <!-- Wrist Joints -->
+            <body name="wrist_1_link" pos="0 0 0.571" quat="1 0 1 0">
+              <inertial pos="0 0.135 0" mass="1.96" diaginertia="0.0055125 0.00510825 0.00510825"/>
+              <joint name="wrist_1_joint" type="hinge" axis="0 1 0" range="-6.28319 6.28319" damping="2"/>
+              <geom mesh="wrist1_0" material="black"/>
+              <geom mesh="wrist1_1" material="urblue"/>
+              <geom mesh="wrist1_2" material="jointgray"/>
+              
+              <body name="wrist_2_link" pos="0 0 0.135">
+                <inertial pos="0 0 0.12" mass="1.96" diaginertia="0.0055125 0.00510825 0.00510825"/>
+                <joint name="wrist_2_joint" type="hinge" axis="0 1 0" range="-6.28319 6.28319" damping="2"/>
+                <geom mesh="wrist2_0" material="black"/>
+                <geom mesh="wrist2_1" material="urblue"/>
+                <geom mesh="wrist2_2" material="jointgray"/>
+                
+                <body name="wrist_3_link" pos="0 0 0.12">
+                  <inertial pos="0 0.092 0" mass="0.202" diaginertia="0.000204525 0.000144346 0.000144346"/>
+                  <joint name="wrist_3_joint" type="hinge" axis="0 1 0" range="-6.28319 6.28319" damping="2"/>
+                  <geom mesh="wrist3" material="linkgray"/>
+                  <body name="right_hand" pos="0 0.098 0" quat="0.707 -0.707 0 0">
+                      <camera mode="fixed" name="eye_in_hand" pos="0.05 0 0" quat="0 0.707108 0.707108 0" fovy="75"/>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+    <actuator>
+        <!-- Physical limits of the actuator. -->
+        <!-- Values taken from https://www.universal-robots.com/articles/ur-articles/max-joint-torques/ -->
+        <motor ctrllimited="true" ctrlrange="-150.0 150.0" joint="shoulder_pan_joint" name="torq_j1"/>
+        <motor ctrllimited="true" ctrlrange="-150.0 150.0" joint="shoulder_lift_joint" name="torq_j2"/>
+        <motor ctrllimited="true" ctrlrange="-150.0 150.0" joint="elbow_joint" name="torq_j3"/>
+        <motor ctrllimited="true" ctrlrange="-28.0 28.0" joint="wrist_1_joint" name="torq_j4"/>
+        <motor ctrllimited="true" ctrlrange="-28.0 28.0" joint="wrist_2_joint" name="torq_j5"/>
+        <motor ctrllimited="true" ctrlrange="-28.0 28.0" joint="wrist_3_joint" name="torq_j6"/>
+    </actuator>
+  <keyframe>
+    <key name="home" qpos="-1.5708 -1.5708 1.5708 -1.5708 -1.5708 0" ctrl="-1.5708 -1.5708 1.5708 -1.5708 -1.5708 0"/>
+  </keyframe>
+</mujoco>
